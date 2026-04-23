@@ -1,0 +1,12 @@
+{
+  "singleLabel": "Single",
+  "titleWords": [ "Goldene", "Stille", "Nacht", "Echo", "Traum", "Fluss", "Himmel", "Feuer", "Schatten", "Licht" ],
+  "artistWords": [ "Lena", "Mika", "Anna", "Noah", "Velvet", "Geist", "Signal", "Stein", "Reed", "Brooks" ],
+  "albumWords": [ "Nachglanz", "Statik", "Bewegung", "Kino", "Parade", "Träume", "Lichter", "Wellen" ],
+  "genres": [ "Pop", "Rock", "Jazz", "Indie", "Synthwave" ],
+  "reviewPhrases": [
+    "Sanfte Melodie mit einem eingängigen Hook.",
+    "Vielschichtige Produktion mit filmischer Stimmung.",
+    "Prägnanter Rhythmus und sauberer Aufbau."
+  ]
+}
