@@ -95,25 +95,13 @@ namespace MusicStoreShowcase.Controllers
             return Json(details);
         }
 
-        //[HttpGet("cover")]
-        //public IActionResult GetCover(string id, string title = "Unknown Title", string artist = "Unknown Artist")
-        //{
-        //    var bytes = _coverService.GenerateCover(id, title, artist);
-        //    return File(bytes, "image/png");
-        //}
         [HttpGet("cover")]
         public IActionResult GetCover(string id, string title = "Unknown Title", string artist = "Unknown Artist")
         {
-            try
-            {
-                var bytes = _coverService.GenerateCover(id, title, artist);
-                return File(bytes, "image/png");
-            }
-            catch (Exception ex)
-            {
-                return Content("ERROR: " + ex.Message);
-            }
+            var bytes = _coverService.GenerateCover(id, title, artist);
+            return File(bytes, "image/png");
         }
+
         [HttpGet("preview")]
         public IActionResult GetPreview(string id)
         {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using MusicStoreShowcase.Services;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
@@ -7,25 +6,54 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using System.Numerics;
 
 namespace MusicStoreShowcase.Services
 {
     public class CoverService
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public CoverService(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         public byte[] GenerateCover(string songId, string title, string artist)
         {
             int seed = SeedHelper.ToStableInt($"cover:{songId}");
             var rng = new Random(seed);
 
-            string[] files = Directory.GetFiles("wwwroot/assets/covers");
+            string coversPath = System.IO.Path.Combine(_environment.WebRootPath, "assets", "covers");
+
+            if (!Directory.Exists(coversPath))
+            {
+                throw new DirectoryNotFoundException($"Covers folder not found: {coversPath}");
+            }
+
+            string[] files = Directory.GetFiles(coversPath)
+                .Where(f =>
+                    f.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            if (files.Length == 0)
+            {
+                throw new FileNotFoundException($"No cover images found in: {coversPath}");
+            }
+
             string selectedFile = files[rng.Next(files.Length)];
 
             using var image = Image.Load<Rgba32>(selectedFile);
 
             image.Mutate(ctx =>
             {
-                ctx.Resize(300, 300);
+                ctx.Resize(new ResizeOptions
+                {
+                    Size = new Size(300, 300),
+                    Mode = ResizeMode.Crop
+                });
 
                 ctx.Fill(Color.Black.WithAlpha(0.35f));
 
@@ -36,8 +64,9 @@ namespace MusicStoreShowcase.Services
                 );
             });
 
-            Font titleFont = SystemFonts.CreateFont("Arial", 26, FontStyle.Bold);
-            Font artistFont = SystemFonts.CreateFont("Arial", 16, FontStyle.Regular);
+            var fontFamily = SystemFonts.Collection.Families.First();
+            Font titleFont = fontFamily.CreateFont(26, FontStyle.Bold);
+            Font artistFont = fontFamily.CreateFont(16, FontStyle.Regular);
 
             image.Mutate(ctx =>
             {
@@ -48,14 +77,6 @@ namespace MusicStoreShowcase.Services
             using var ms = new MemoryStream();
             image.Save(ms, new PngEncoder());
             return ms.ToArray();
-        }
-        private static Color RandomColor(Random rng)
-        {
-            return Color.FromRgb(
-                (byte)rng.Next(40, 220),
-                (byte)rng.Next(40, 220),
-                (byte)rng.Next(40, 220)
-            );
         }
     }
 }
