@@ -138,23 +138,25 @@ async function toggleDetails(song, clickedRow) {
     );
     const details = await response.json();
 
+    const coverIndex = (song.index % 15) + 1;
+
     const detailsRow = document.createElement('tr');
     detailsRow.id = 'detailsRow';
 
     detailsRow.innerHTML = `
-    <td colspan="6">
-        <div class="details-panel">
-            <div class="details-content">
-                <img src="${details.coverUrl}" alt="Cover" width="180" height="180" />
-                <div class="details-text">
-                    <p><strong>Review:</strong> ${details.review}</p>
-                    <p><strong>Preview:</strong></p>
-                    <audio controls src="${details.previewUrl}"></audio>
+        <td colspan="6">
+            <div class="details-panel">
+                <div class="details-content">
+                    <img src="/assets/covers/cover${coverIndex}.jpg" alt="Cover" width="180" height="180" />
+                    <div class="details-text">
+                        <p><strong>Review:</strong> ${details.review}</p>
+                        <p><strong>Preview:</strong></p>
+                        <audio controls src="${details.previewUrl}"></audio>
+                    </div>
                 </div>
             </div>
-        </div>
-    </td>
-`;
+        </td>
+    `;
 
     clickedRow.insertAdjacentElement('afterend', detailsRow);
     expandedSongId = song.id;
