@@ -131,7 +131,7 @@ The application demonstrates deterministic data generation using seeds, localiza
 
 The project is deployed and accessible here:
 
-👉 ** **
+👉 **https://musicstoreshowcase.onrender.com**
 
 ---
 
@@ -139,7 +139,7 @@ The project is deployed and accessible here:
 
 Video demonstration:
 
-👉 ** **
+👉 **https://drive.google.com/file/d/1fwUDFFIEVZdP5Q1ksMtuR6lYMXfE-uxv/view?usp=sharing**
 
 ---
 
