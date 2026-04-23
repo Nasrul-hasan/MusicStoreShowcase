@@ -1,5 +1,5 @@
 ﻿let currentPage = 1;
-const pageSize = 20;
+const pageSize = 12;
 let currentView = "table";
 let isLoading = false;
 let expandedSongId = null;
@@ -82,8 +82,10 @@ function renderGallery(songs, isFirstPage) {
         card.className = 'gallery-card';
         card.style.cursor = 'pointer';
 
+        const coverIndex = (song.index % 15) + 1;
+
         card.innerHTML = `
-            <img src="/songs/cover?id=${encodeURIComponent(song.id)}&title=${encodeURIComponent(song.title)}&artist=${encodeURIComponent(song.artist)}"
+            <img src="/assets/covers/cover${coverIndex}.jpg"
                  alt="Cover"
                  style="width:100%; height:180px; object-fit:cover; margin-bottom:10px;" />
             <strong>${song.title}</strong><br/>
